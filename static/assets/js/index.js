@@ -6,4 +6,11 @@ document.getElementById('cropImageBtn').addEventListener('click', function () {
 
     console.log(data)
     document.getElementById('output').src = croppedImage;
-});
+
+    $.ajax({
+        url:"/test",
+        type:"POST",
+        contentType: "application/json",
+        data: JSON.stringify(data)});
+}
+);
