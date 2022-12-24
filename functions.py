@@ -19,21 +19,27 @@ def save_img(img_1d,img_height,img_width,file_name):
 
 def blur_image(img,cropped_indecies,file_name):
     print(cropped_indecies)
-    left=cropped_indecies[0]
-    top=cropped_indecies[1]
-    width=cropped_indecies[2]
+    left  =cropped_indecies[0]
+    top   =cropped_indecies[1]
+    width =cropped_indecies[2]
     height=cropped_indecies[3]
 
-    blurred_part = cv2.blur(img[top:top+height, left:left+width], ksize=(21, 21) )
-    blurred = img.copy()
-    blurred[top:top+height, left:left+width] = blurred_part
-    cv2.imwrite("static/assets/images/after_blurring/"+file_name+'.png', blurred)
+    kept_part=img[top:top+height, left:left+width]
+    blurred_part = cv2.blur(img, ksize=(30, 30) )
+    result=blurred_part.copy()
+    result[top:top+height, left:left+width] = kept_part
+    cv2.imwrite("static/assets/images/after_blurring/"+file_name+'.png', result)
+    return result
 
 
 
 def process_1dImage(img1_gray,img2_gray,img_height,img_width):
 
     #----------------Resizing
+    # img1_gray = cv2.imread('static/assets/images/after_blurring/blurr2.png')
+    # img2_gray = cv2.imread('static/assets/images/after_blurring/blurr2.png')
+
+
     img1_resized = cv2.resize(img1_gray, (img_width, img_height))
     img2_resized = cv2.resize(img2_gray, (img_width, img_height))
     #---------converting it to a 1d array
@@ -56,27 +62,17 @@ def read_2images(cropped_indecies):
     # --------reading files by matplot and opencv
     images_files = glob('static/assets/images/inputs/*.jpg')
     img_file1=images_files[0]
-    img_file2=images_files[4]
+    img_file2=images_files[3]
 
     img1_mpl = plt.imread(img_file1)
     img1_cv2 = cv2.imread(img_file1)
     img1_gray = cv2.cvtColor(img1_cv2, cv2.COLOR_RGB2GRAY)
     cv2.imwrite("static/assets/images/outputs/original_img1.png", img1_gray)
 
-
     img2_mpl = plt.imread(img_file2)
     img2_cv2 = cv2.imread(img_file2)
     img2_gray = cv2.cvtColor(img2_cv2, cv2.COLOR_RGB2GRAY)
     cv2.imwrite("static/assets/images/outputs/original_img2.png", img2_gray)
-
-    if(cropped_indecies[1]==0):
-        print('nothing')
-        blur_image(img1_gray,[100,100,150,250],'blurr1')
-        blur_image(img2_gray,[100,100,150,250],'blurr2')
-
-
-    else:
-        blur_image(img1_gray,cropped_indecies[:4],'new2')
 
     # --------getting height width
     img1_height =len(img1_mpl)
@@ -88,6 +84,15 @@ def read_2images(cropped_indecies):
     #--------------- processing then display output
     new_height  =minimum(img1_height,img2_height)
     new_width   =minimum(img1_width ,img2_width)
+
+    if(cropped_indecies[1]==0):
+        print('nothing')
+        img1_gray=blur_image(img1_gray,[100,100,150,250],'blurr1')
+        img2_gray=blur_image(img2_gray,[100,100,150,250],'blurr2')
+
+
+    else:
+        blur_image(img1_gray,cropped_indecies[:4],'new2')
 
     img1,img2=process_1dImage(img1_gray,img2_gray,new_height,new_width)  
 
