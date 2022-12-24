@@ -10,9 +10,10 @@
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Cropper = factory());
-})(this, (function () { 'use strict';
+    typeof define === 'function' && define.amd ? define(factory) :
+      (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Cropper = factory());
+})(this, (function () {
+  'use strict';
 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
@@ -558,7 +559,7 @@
     var supported = false;
     if (IS_BROWSER) {
       var once = false;
-      var listener = function listener() {};
+      var listener = function listener() { };
       var options = Object.defineProperty({}, 'once', {
         get: function get() {
           supported = true;
@@ -1147,8 +1148,8 @@
       addClass(cropper, CLASS_HIDDEN);
       removeClass(element, CLASS_HIDDEN);
       var containerData = {
-        width: Math.max(container.offsetWidth, minWidth >= 0 ? minWidth : MIN_CONTAINER_WIDTH),
-        height: Math.max(container.offsetHeight, minHeight >= 0 ? minHeight : MIN_CONTAINER_HEIGHT)
+        width: 500,
+        height: 300
       };
       this.containerData = containerData;
       setStyle(cropper, {
@@ -1283,10 +1284,10 @@
         imageData = this.imageData;
       if (transformed) {
         var _getRotatedSizes = getRotatedSizes({
-            width: imageData.naturalWidth * Math.abs(imageData.scaleX || 1),
-            height: imageData.naturalHeight * Math.abs(imageData.scaleY || 1),
-            degree: imageData.rotate || 0
-          }),
+          width: imageData.naturalWidth * Math.abs(imageData.scaleX || 1),
+          height: imageData.naturalHeight * Math.abs(imageData.scaleY || 1),
+          degree: imageData.rotate || 0
+        }),
           naturalWidth = _getRotatedSizes.width,
           naturalHeight = _getRotatedSizes.height;
         var width = canvasData.width * (naturalWidth / canvasData.naturalWidth);
@@ -1729,13 +1730,13 @@
         button = event.button;
       if (this.disabled
 
-      // Handle mouse event and pointer event and ignore touch event
-      || (event.type === 'mousedown' || event.type === 'pointerdown' && event.pointerType === 'mouse') && (
-      // No primary button (Usually the left button)
-      isNumber(buttons) && buttons !== 1 || isNumber(button) && button !== 0
+        // Handle mouse event and pointer event and ignore touch event
+        || (event.type === 'mousedown' || event.type === 'pointerdown' && event.pointerType === 'mouse') && (
+          // No primary button (Usually the left button)
+          isNumber(buttons) && buttons !== 1 || isNumber(button) && button !== 0
 
-      // Open context menu
-      || event.ctrlKey)) {
+          // Open context menu
+          || event.ctrlKey)) {
         return;
       }
       var options = this.options,
@@ -2749,10 +2750,10 @@
         height: options.minHeight || 0
       }, 'cover');
       var _getAdjustedSizes = getAdjustedSizes({
-          aspectRatio: aspectRatio,
-          width: options.width || (ratio !== 1 ? source.width : initialWidth),
-          height: options.height || (ratio !== 1 ? source.height : initialHeight)
-        }),
+        aspectRatio: aspectRatio,
+        width: options.width || (ratio !== 1 ? source.width : initialWidth),
+        height: options.height || (ratio !== 1 ? source.height : initialHeight)
+      }),
         width = _getAdjustedSizes.width,
         height = _getAdjustedSizes.height;
       width = Math.min(maxSizes.width, Math.max(minSizes.width, width));
