@@ -7,9 +7,20 @@ document.getElementById('cropImageBtn').addEventListener('click', function () {
     var croppedImage = cropper.getCroppedCanvas().toDataURL('image/png');
     var data = cropper.getCropBoxData();
     document.getElementById('output').src = croppedImage;
+    $.ajax({
+        url:"/crop_image1",
+        type:"POST",
+        contentType: "application/json",
+        data: JSON.stringify(data)});
 });
 document.getElementById('cropImageBtn2').addEventListener('click', function () {
     var croppedImage2 = cropper2.getCroppedCanvas().toDataURL('image/png');
     var data2 = cropper2.getCropBoxData();
     document.getElementById('output').src = croppedImage2;
+    
+    $.ajax({
+        url:"/crop_image2",
+        type:"POST",
+        contentType: "application/json",
+        data: JSON.stringify(data2)});
 });
