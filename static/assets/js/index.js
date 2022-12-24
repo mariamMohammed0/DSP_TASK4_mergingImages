@@ -6,7 +6,7 @@ const cropper2 = new Cropper(image2, { zoomable: 0, aspectRatio: 0, viewMode: 0,
 document.getElementById('cropImageBtn').addEventListener('click', function () {
     var croppedImage = cropper.getCroppedCanvas().toDataURL('image/png');
     var data = cropper.getCropBoxData();
-    document.getElementById('output').src = croppedImage;
+    // document.getElementById('output').src = croppedImage;
     $.ajax({
         url:"/crop_image1",
         type:"POST",
@@ -16,7 +16,7 @@ document.getElementById('cropImageBtn').addEventListener('click', function () {
 document.getElementById('cropImageBtn2').addEventListener('click', function () {
     var croppedImage2 = cropper2.getCroppedCanvas().toDataURL('image/png');
     var data2 = cropper2.getCropBoxData();
-    document.getElementById('output').src = croppedImage2;
+    // document.getElementById('output').src = croppedImage2;
     
     $.ajax({
         url:"/crop_image2",
