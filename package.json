@@ -1,0 +1,23 @@
+{
+  "name": "dsp_task4_mergingimages",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cropperjs": "^1.5.13"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariamMohammed0/DSP_TASK4_mergingImages.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariamMohammed0/DSP_TASK4_mergingImages/issues"
+  },
+  "homepage": "https://github.com/mariamMohammed0/DSP_TASK4_mergingImages#readme"
+}
