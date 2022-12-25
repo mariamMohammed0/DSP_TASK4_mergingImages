@@ -12,14 +12,18 @@
 
 <body>
     <div class="container">
-        <div class="frist_in">
+        <div class="frist_in" id="pic1">
             <img src="../static/assets/images/inputs/flowers.jpg" id="image">
-            <button id="cropImageBtn"> crop image</button>
+            <!-- <button id="cropImageBtn"> crop image</button> -->
+            <input type="radio" name="pic1_radio" value=0 checked="checked">Magnitude
+            <input type="radio" name="pic1_radio" value=1>Phase
         </div>
-        <div class="second_in">
+        <div class="second_in" id="pic2">
             <img src="../static/assets/images/inputs/photo-sizes.jpg" id="image2">
             <!-- <button id="cropImageBtn2"> crop image</button> -->
-
+            <input type="radio" name="pic2_radio" value=0>Magnitude
+            <input type="radio" name="pic2_radio" value=1 checked="checked">Phase
+            
         </div>
 
         <div class="out">
