@@ -6,6 +6,77 @@ import matplotlib.pylab as plt
 
 plt.style.use('ggplot')
 
+def resize_images(img1,img2):
+    #----------------Resizing
+    img1_resized = cv2.resize(img1, (500, 500))
+    img2_resized = cv2.resize(img2, (500, 500))
+    cv2.imwrite("static/assets/images/front/resized_img1.png", img1_resized)
+    cv2.imwrite("static/assets/images/front/resized_img2.png", img2_resized)
+    return img1_resized,img2_resized
+
+
+def Process_images(img1,img2,choices):
+    print("---------------------------choices",choices)
+    print("-----------------img1",len(img1[0]))
+    print("-----------------img2",len(img2[0]))
+
+     #---------converting it to a 1d array
+    img1_1dArray=img1.flatten()
+    img2_1dArray=img2.flatten()
+    print("-----------------img1",len(img1_1dArray))
+    print("-----------------img2",len(img1_1dArray))
+    #-------------- fourier transform
+    f  = np.fft.fft(img1_1dArray)
+    f2 = np.fft.fft(img2_1dArray)
+    print("-----------------img1",len(f))
+    print("-----------------img2",len(f2))
+    
+    if (choices[8]==1 and choices[9]==1 ):
+        print("choice1 phase choice2 phase")
+        combined_img1 = np.multiply(np.exp(1j*np.angle(f)), np.exp(1j*np.angle(f2)))
+        
+    elif (choices[8]==0 and choices[9]==1 ):
+        print("choice1 mag choice2 phase")      
+        combined_img1 = np.multiply(np.abs(f), np.exp(1j*np.angle(f2)))
+
+
+    elif (choices[8]==1 and choices[9]==0 ):
+        print("choice1 phase choice2 mag")
+        combined_img1 = np.multiply(np.abs(f2), np.exp(1j*np.angle(f)))
+
+    elif (choices[8]==0 and choices[9]==0 ):
+        print("choice1 mag choice2 mag")
+        combined_img1 = np.multiply(np.abs(f), np.abs(f2))
+   
+
+    imgCombined = np.real(np.fft.ifft(combined_img1))
+    img_2d=imgCombined.reshape((500, 500))
+    cv2.imwrite("static/assets/images/outputs/"+'output_image1'+'.png', img_2d)
+
+    return  img_2d 
+
+
+def read_images(cropped_indecies):
+
+    # --------reading files by matplot and opencv
+    images_files = glob('static/assets/images/inputs/*.jpg')
+    img_file1=images_files[1]
+    img_file2=images_files[4]
+    
+    img1_mpl = plt.imread(img_file1)
+    img1_cv2 = cv2.imread(img_file1)
+    img2_mpl = plt.imread(img_file2)
+    img2_cv2 = cv2.imread(img_file2)
+
+    # -------- gray scaled
+    img2_gray = cv2.cvtColor(img2_cv2, cv2.COLOR_RGB2GRAY)
+    img1_gray = cv2.cvtColor(img1_cv2, cv2.COLOR_RGB2GRAY)
+
+    # ---------resize images
+    img1,img2=resize_images(img1_gray,img2_gray)
+    Process_images(img1,img2,cropped_indecies)
+
+
 
 def minimum(a, b):  
     if a <= b:
@@ -31,8 +102,6 @@ def blur_image(img,cropped_indecies,file_name):
     cv2.imwrite("static/assets/images/after_blurring/"+file_name+'.png', result)
     print('doneeeee')
     return result
-
-
 
 def process_1dImage(img1_gray,img2_gray,img_height,img_width):
 
