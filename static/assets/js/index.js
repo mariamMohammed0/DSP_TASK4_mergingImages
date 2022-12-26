@@ -66,6 +66,8 @@ function updateImageDisplay() {
     const curFiles = upload_btn.files;
     file_name = curFiles[0].name;
     console.log(curFiles[0].name)
+    // sr="--------------------------------------"
+    // console.log(sr)
 
     $.ajax({
         url: "/save_image",
@@ -73,6 +75,6 @@ function updateImageDisplay() {
         contentType: "application/json",
         data: JSON.stringify(file_name),
     });
-
+    // console.log("--------------------------------------")
 
 }
