@@ -1,5 +1,5 @@
-from flask import Flask, render_template, send_file, request, redirect,jsonify
-import functions as fn 
+from flask import Flask, render_template, send_file, request, redirect, jsonify
+import functions as fn
 import numpy as np
 
 
@@ -8,24 +8,39 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+<<<<<<< HEAD
     cropped_indecies=np.zeros(10)
     fn.read_images(cropped_indecies) 
+=======
+    cropped_indecies = np.zeros(8)
+    fn.read_2images(cropped_indecies)
+
+>>>>>>> 7d637521e63c9d61c9fe7fd10d084a668ec46af5
     return render_template('index.html')
-        
+
+
 @app.route('/crop_image1', methods=['POST'])
 def crop_image1():
     output = request.get_json()
 
+<<<<<<< HEAD
     cropped_indecies=[0,0,0,0,0,0,0,0,0,0]
     cropped_indecies[0]=int(round(output['pic1']['left']))
     cropped_indecies[1]=int(round(output['pic1']['top'] ))
     cropped_indecies[2]=int(round(output['pic1']['width']))
     cropped_indecies[3]=int(round(output['pic1']['height']))
+=======
+    cropped_indecies = [0, 0, 0, 0, 0, 0, 0, 0]
+    cropped_indecies[0] = int(round(output['pic1']['left']))
+    cropped_indecies[1] = int(round(output['pic1']['top']))
+    cropped_indecies[2] = int(round(output['pic1']['width']))
+    cropped_indecies[3] = int(round(output['pic1']['height']))
+>>>>>>> 7d637521e63c9d61c9fe7fd10d084a668ec46af5
 
-    cropped_indecies[4]=int(round(output['pic2']['left']))
-    cropped_indecies[5]=int(round(output['pic2']['top'] ))
-    cropped_indecies[6]=int(round(output['pic2']['width']))
-    cropped_indecies[7]=int(round(output['pic2']['height']))
+    cropped_indecies[4] = int(round(output['pic2']['left']))
+    cropped_indecies[5] = int(round(output['pic2']['top']))
+    cropped_indecies[6] = int(round(output['pic2']['width']))
+    cropped_indecies[7] = int(round(output['pic2']['height']))
 
     cropped_indecies[8]=int(output['pic1_choice'])
     cropped_indecies[9]=int(output['pic2_choice'])
@@ -35,6 +50,14 @@ def crop_image1():
     fn.read_images(cropped_indecies)
     return output
 
+
+@app.route('/save_image', methods=['POST'])
+def save_image():
+    print('---------------------------------------------')
+    output = request.get_json()
+    print('---------------------------------------------')
+    print(output)
+    return output
 # @app.route('/crop_image2', methods=['POST'])
 # def crop_image2():
 #     output = request.get_json()
@@ -52,12 +75,17 @@ def crop_image1():
 #     # cropped_indecies[7]=round(output['height'])
 #     # fn.read_2images(cropped_indecies)
 #     return output
+<<<<<<< HEAD
 @app.route('/save_image', methods=['POST'])
 def save_image():
     output = request.get_json()
     print(output) 
     return output
     
+=======
+
+
+>>>>>>> 7d637521e63c9d61c9fe7fd10d084a668ec46af5
 if __name__ == "__main__":
-    
+
     app.run(debug=True, threaded=True)
