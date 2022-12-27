@@ -1,19 +1,21 @@
 img {
     width: 500px;
     height: 300px;
-    max-width: 100%;
+    /* max-width: 100%; */
 }
 
 .container {
     display: grid;
     grid-column-gap: 50px;
-    grid-row-gap: 20px;
+    grid-row-gap: 50px;
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    grid-template-rows: repeat(2, minmax(300px, 600px));
+    grid-template-rows: repeat(3, minmax(300px, 600px));
     width: 90%;
     margin: 5% auto;
     max-height: 700px;
     height: 800px;
+    grid-gap: space;
+    padding-top: 20px;
 
 
 }
@@ -29,7 +31,7 @@ img {
     grid-column: 1/2;
     grid-row: 1/2;
     width: 500px;
-    height: 300px;
+    height: 400px;
 
 }
 
@@ -37,7 +39,8 @@ img {
     grid-column: 2/3;
     grid-row: 1/2;
     width: 500px;
-    height: 300px;
+    height: 400px;
+    margin-left: 200px;
 
 }
 
@@ -55,4 +58,58 @@ button {
 .cropper-drag-box.cropper-crop.cropper-modal {
     width: 500px !important;
     height: 300px !important;
+}
+
+#img_cont,
+#img_cont2 {
+    display: inline;
+    /* margin-top: 20px; */
+}
+
+input {
+    margin-top: 20px;
+}
+
+[type="file"] {
+    font-family: sans-serif;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    color: #9b9b9b76;
+    padding: 8px;
+    background-color: #9b9b9b76;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    width: 100px;
+
+}
+
+.frist_uploader {
+    position: absolute;
+    left: 600px;
+    top: 100px;
+}
+
+.selector_first {
+    position: absolute;
+    left: 600px;
+    top: 150px;
+    display: flex;
+    flex-direction: column;
+}
+
+.second_uploader {
+    position: absolute;
+    left: 810px;
+    top: 100px;
+}
+
+.selector_second {
+    position: absolute;
+    left: 810px;
+    top: 150px;
+    display: flex;
+    flex-direction: column;
 }

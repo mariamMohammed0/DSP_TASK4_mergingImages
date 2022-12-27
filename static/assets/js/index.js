@@ -66,15 +66,29 @@ function updateImageDisplay() {
     const curFiles = upload_btn.files;
     file_name = curFiles[0].name;
     console.log(curFiles[0].name)
-    // sr="--------------------------------------"
-    // console.log(sr)
-
+    var picture = { "pic": file_name, "index": 0 };
     $.ajax({
         url: "/save_image",
         type: "POST",
         contentType: "application/json",
-        data: JSON.stringify(file_name),
+        data: JSON.stringify(picture),
     });
-    // console.log("--------------------------------------")
+
+}
+const upload_btn2 = document.getElementById('image_uploads2');
+upload_btn2.addEventListener('change', updateImageDisplay);
+function updateImageDisplay() {
+
+    const curFiles2 = upload_btn2.files;
+    file_name2 = curFiles2[0].name;
+    console.log(curFiles2[0].name)
+    var picture = { "pic": file_name2, "index": 1 };
+    $.ajax({
+        url: "/save_image",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(picture),
+    });
+
 
 }

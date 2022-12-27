@@ -12,27 +12,40 @@
 
 <body>
     <div class="container">
-        <div id="img_cont">
-            <label for="image_uploads">Choose image</label>
-            <input type="file" id="image_uploads" name="image_uploads" />
-        </div>
-        <div class="frist_in" id="pic1">
-            <img src="../static/assets/images/inputs/flowers.jpg" id="image">
+
+        <div class="frist_in">
+            <div id="pic1"> <img src="../static/assets/images/inputs/flowers.jpg" id="image"></div>
             <!-- <button id="cropImageBtn"> crop image</button> -->
-            <input type="radio" name="pic1_radio" value=0 checked="checked">Magnitude
-            <input type="radio" name="pic1_radio" value=1>Phase
+            <div id="img_cont" class="frist_uploader">
+                <input type="file" id="image_uploads" name="image_uploads" />
+            </div>
+            <div class="selector_first">
+                <div><input type="radio" name="pic1_radio" value=0 checked="checked">Magnitude</div>
+                <div><input type="radio" name="pic1_radio" value=1>Phase</div>
+
+            </div>
+
         </div>
-        <div class="second_in" id="pic2">
-            <img src="../static/assets/images/inputs/musician-623362__340.jpg" id="image2">
+
+
+        <div class="second_in">
+            <div id="pic2"><img src="../static/assets/images/inputs/musician-623362__340.jpg" id="image2"></div>
+
             <!-- <button id="cropImageBtn2"> crop image</button> -->
-            <input type="radio" name="pic2_radio" value=0>Magnitude
-            <input type="radio" name="pic2_radio" value=1 checked="checked">Phase
+            <div id="img_cont2" class="second_uploader">
+                <input type="file" id="image_uploads2" name="image_uploads" />
+            </div>
+            <div class="selector_second">
+                <div><input type="radio" name="pic2_radio" value=0>Magnitude</div>
+                <div><input type="radio" name="pic2_radio" value=1 checked="checked">Phase</div>
+            </div>
+
 
         </div>
 
         <div class="out">
             <img class="img1" src="../static/assets/images/outputs/output_image1.png?random" id="output1">
-            <img class="img2" src="../static/assets/images/outputs/output_image2.png?random" id="output2">
+            <!-- <img class="img2" src="../static/assets/images/outputs/output_image2.png?random" id="output2"> -->
         </div>
 
     </div>
