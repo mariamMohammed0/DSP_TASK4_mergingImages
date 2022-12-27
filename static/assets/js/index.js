@@ -114,7 +114,7 @@ function updateImageDisplay() {
         contentType: "application/json",
         data: JSON.stringify(picture),
     });
-
+    location.reload()
 }
 const upload_btn2 = document.getElementById('image_uploads2');
 upload_btn2.addEventListener('change', updateImageDisplay2);
@@ -130,7 +130,7 @@ function updateImageDisplay2() {
         contentType: "application/json",
         data: JSON.stringify(picture),
     });
-
+    location.reload()
 
 }
 custom_btn.addEventListener('click', function () {
@@ -138,4 +138,32 @@ custom_btn.addEventListener('click', function () {
 })
 custom_btn2.addEventListener('click', function () {
     upload_btn2.click();
-})
+}
+
+)
+
+
+// document.getElementById('uni_phase').addEventListener('click', function () {
+
+//     radiobtn = document.querySelector('input[name="uniform"]:checked').value;
+
+//     console.log(radiobtn)
+//     images_processing()
+// });
+
+
+// function get_uniform_value()
+// {
+//     radiobtn = document.querySelector('input[name="pic2_radio"]:checked').value;
+//     console.log(radiobtn)
+//     if (radiobtn==0)
+//     {
+//         phase1_radio.checked = true;
+//         mag1_radio.checked = false;
+//     }
+//     else if (radiobtn==1)
+//     {
+//         phase1_radio.checked = false;
+//         mag1_radio.checked = true;
+//     }
+// }

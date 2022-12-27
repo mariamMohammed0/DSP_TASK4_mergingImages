@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    cropped_indecies=np.zeros(10)
+    cropped_indecies=[0,0,0,0,0,0,0,0,0,0]
     fn.read_images(cropped_indecies) 
     return render_template('index.html')
         

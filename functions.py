@@ -6,6 +6,26 @@ import matplotlib.pylab as plt
 
 plt.style.use('ggplot')
 
+def SeparateMagnitudephase(img1_fft, img2_fft):
+
+    img1_amplitude  = np.sqrt(np.real(img1_fft) * 2 + np.imag(img1_fft) * 2)
+    img1_phase      = np.arctan2(np.imag(img1_fft), np.real(img1_fft))
+    img2_amplitude  = np.sqrt(np.real(img2_fft) * 2 + np.imag(img2_fft) * 2)
+    img2_phase      = np.arctan2(np.imag(img2_fft), np.real(img2_fft))
+
+    return img1_amplitude, img1_phase, img2_amplitude, img2_phase
+
+def draw_requency_domain(F1_2d,F2_2d):
+
+    fig, ax = plt.subplots(1,4)
+
+    ax[0].plot (abs(F1_2d))
+    ax[1].plot (abs(F2_2d))
+    ax[2].plot (np.angle(F1_2d)[0:100])
+    ax[3].plot (np.angle(F2_2d)[0:100])
+
+    fig.savefig('static/assets/images/matplot/resized_img2.png')
+
 def resize_images(img1,img2):
     #----------------Resizing
     img1_resized = cv2.resize(img1, (500, 500))
@@ -14,25 +34,68 @@ def resize_images(img1,img2):
     cv2.imwrite("static/assets/images/front/resized_img2.png", img2_resized)
     return img1_resized,img2_resized
 
+def cropping_fourier (F_img1,F_img2,cropping_indecies):
+
+    # draw_requency_domain(F_img1,F_img2)
+
+    # F1_2d=F_img1.reshape((500, 300))
+    # F2_2d=F_img2.reshape((500, 300))
+
+    F1_2d=F_img1
+    F2_2d=F_img2
+
+
+    left1    =cropping_indecies[0]
+    top1     =int(cropping_indecies[1]*500/300)
+    width1   =cropping_indecies[2]
+    height1  =int(cropping_indecies[3]*500/300)
+    left2    =cropping_indecies[4]
+    top2     =int(cropping_indecies[5]*500/300)
+    width2   =cropping_indecies[6]
+    height2  =int(cropping_indecies[7]*500/300)
+
+    chosen_part1=F1_2d[top1:top1+height1, left1:left1+width1]
+    chosen_part2=F2_2d[top2:top2+height2, left2:left2+width2]
+    
+    rejected_part1 = F1_2d*0
+    rejected_part2 = F2_2d*0
+    rejected_part1 +=1+1j
+    rejected_part2 +=1+1j
+
+    # rejected_part1+=5+5j
+    # print(rejected_part1)
+    result1=rejected_part1.copy()
+    result2=rejected_part2.copy()
+
+    result1[top1:top1+height1, left1:left1+width1] = chosen_part1
+    result2[top2:top2+height2, left2:left2+width2] = chosen_part2
+
+    # img1_1dArray=result1.flatten()
+    # img2_1dArray=result2.flatten()
+   
+    img1_1dArray=result1
+    img2_1dArray=result2
+
+    return img1_1dArray,img2_1dArray
 
 def Process_images(img1,img2,choices):
     print("---------------------------choices",choices)
-    print("-----------------img1",len(img1[0]))
-    print("-----------------img2",len(img2[0]))
+
 
      #---------converting it to a 1d array
-    img1_1dArray=img1.flatten()
-    img2_1dArray=img2.flatten()
-    print("-----------------img1",len(img1_1dArray))
-    print("-----------------img2",len(img1_1dArray))
+    # img1_1dArray=img1.flatten()
+    # img2_1dArray=img2.flatten()
+
     #-------------- fourier transform
-    f  = np.fft.fft(img1_1dArray)
-    f2 = np.fft.fft(img2_1dArray)
-    print("-----------------img1",len(f))
-    print("-----------------img2",len(f2))
-    
-    if (choices[8]==1 and choices[9]==1 ):
+    f  = np.fft.fft2(img1)
+    f  = np.fft.fftshift(f)
+    f2 = np.fft.fft2(img2)
+    f2 = np.fft.fftshift(f2)
+    f,f2= cropping_fourier(f,f2,choices)
+
+    if  (choices[8]==1 and choices[9] ==1 ):
         print("choice1 phase choice2 phase")
+
         combined_img1 = np.multiply(np.exp(1j*np.angle(f)), np.exp(1j*np.angle(f2)))
         
     elif (choices[8]==0 and choices[9]==1 ):
@@ -47,21 +110,44 @@ def Process_images(img1,img2,choices):
     elif (choices[8]==0 and choices[9]==0 ):
         print("choice1 mag choice2 mag")
         combined_img1 = np.multiply(np.abs(f), np.abs(f2))
+
+
+
+    # if   (choices[8]==1 and choices[9] ==1 ):
+    #     print("choice1 phase choice2 phase")
+
+    #     combined_img1 = np.multiply(np.exp(1j*np.angle(f)), np.exp(1j*np.angle(f2)))
+        
+    # elif (choices[8]==0 and choices[9]==1 ):
+    #     print("choice1 mag choice2 phase")      
+    #     combined_img1 = np.multiply(np.abs(f), np.exp(1j*np.angle(f2)))
+
+
+    # elif (choices[8]==1 and choices[9]==0 ):
+    #     print("choice1 phase choice2 mag")
+    #     combined_img1 = np.multiply(np.abs(f2), np.exp(1j*np.angle(f)))
+
+    # elif (choices[8]==0 and choices[9]==0 ):
+    #     print("choice1 mag choice2 mag")
+    #     combined_img1 = np.multiply(np.abs(f), np.abs(f2))
    
 
-    imgCombined = np.real(np.fft.ifft(combined_img1))
-    img_2d=imgCombined.reshape((500, 500))
-    cv2.imwrite("static/assets/images/outputs/"+'output_image1'+'.png', img_2d)
+    imgCombined = np.real(np.fft.ifft2(np.fft.fftshift(combined_img1)))
+    # img_2d=imgCombined.reshape((500, 300))
+    # print(imgCombine d[0])
+    cv2.imwrite("static/assets/images/outputs/output_image1.png", imgCombined)
 
-    return  img_2d 
+    return  imgCombined 
 
 
 def read_images(cropped_indecies):
 
     # --------reading files by matplot and opencv
+    print("-----------------------------------------------------------------start")
     images_files = glob('static/assets/images/inputs/*.jpg')
-    img_file1=images_files[1]
-    img_file2=images_files[3]
+    print(images_files)
+    img_file1='static/assets/images/inputs/input_image0.png'
+    img_file2='static/assets/images/inputs/input_image1.png'
     
     img1_mpl = plt.imread(img_file1)
     img1_cv2 = cv2.imread(img_file1)
@@ -76,7 +162,7 @@ def read_images(cropped_indecies):
     img1,img2=resize_images(img1_gray,img2_gray)
     Process_images(img1,img2,cropped_indecies)
 
-
+# -----------------------------------------Cropping in time ---------------------=
 
 def minimum(a, b):  
     if a <= b:
@@ -84,14 +170,10 @@ def minimum(a, b):
     else:
         return b
 
-# def save_img(img_1d,img_height,img_width,file_name):
-#     img_2d=img_1d.reshape((img_height, img_width))
-#     cv2.imwrite("static/assets/images/outputs/"+file_name+'.png', img_2d)
-
 def save_img(img_1d,index):
     img_2d=cv2.resize(img_1d, (500, 500))
     cv2.imwrite("static/assets/images/inputs/input_image"+str(index)+'.png', img_2d)
-
+    
 def blur_image(img,cropped_indecies,file_name):
     print(cropped_indecies)
     left  =cropped_indecies[0]
@@ -132,8 +214,8 @@ def read_2images(cropped_indecies):
         
     # --------reading files by matplot and opencv
     images_files = glob('static/assets/images/inputs/*.jpg')
-    img_file1=images_files[1]
-    img_file2=images_files[4]
+    img_file1='static/assets/images/inputs/input_image0.png'
+    img_file2='static/assets/images/inputs/input_image1.png'
 
     img1_mpl = plt.imread(img_file1)
     img1_cv2 = cv2.imread(img_file1)
