@@ -164,7 +164,7 @@ button {
 }
 
 .small_back3 {
-    width: 550px;
+    width: 650px;
     height: 340px;
     z-index: -99;
     background-color: #9b9b9b76;
@@ -172,4 +172,10 @@ button {
     border-radius: 1.5rem;
     left: 485px;
     top: 390px;
+}
+
+.uniformphase {
+    position: absolute;
+    left: 1010px;
+    top: 530px;
 }

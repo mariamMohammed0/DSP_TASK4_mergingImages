@@ -1185,8 +1185,8 @@
         aspectRatio: aspectRatio,
         naturalWidth: naturalWidth,
         naturalHeight: naturalHeight,
-        width: canvasWidth,
-        height: canvasHeight
+        width: 500,
+        height: 300
       };
       this.canvasData = canvasData;
       this.limited = viewMode === 1 || viewMode === 2;
