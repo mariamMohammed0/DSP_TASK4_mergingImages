@@ -61,7 +61,7 @@ def read_images(cropped_indecies):
     # --------reading files by matplot and opencv
     images_files = glob('static/assets/images/inputs/*.jpg')
     img_file1=images_files[1]
-    img_file2=images_files[4]
+    img_file2=images_files[3]
     
     img1_mpl = plt.imread(img_file1)
     img1_cv2 = cv2.imread(img_file1)
@@ -84,9 +84,13 @@ def minimum(a, b):
     else:
         return b
 
-def save_img(img_1d,img_height,img_width,file_name):
-    img_2d=img_1d.reshape((img_height, img_width))
-    cv2.imwrite("static/assets/images/outputs/"+file_name+'.png', img_2d)
+# def save_img(img_1d,img_height,img_width,file_name):
+#     img_2d=img_1d.reshape((img_height, img_width))
+#     cv2.imwrite("static/assets/images/outputs/"+file_name+'.png', img_2d)
+
+def save_img(img_1d,index):
+    img_2d=cv2.resize(img_1d, (500, 500))
+    cv2.imwrite("static/assets/images/inputs/input_image"+str(index)+'.png', img_2d)
 
 def blur_image(img,cropped_indecies,file_name):
     print(cropped_indecies)
@@ -171,3 +175,7 @@ def read_2images(cropped_indecies):
      # display_2grayimgs(img1,img2,new_height,new_width,new_height,new_width)
 
 
+def download_img(img_name,index):
+    img=cv2.imread('static/assets/images/inputs/'+img_name)
+    save_img(img,index)
+    return

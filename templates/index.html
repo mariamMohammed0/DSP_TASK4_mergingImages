@@ -11,17 +11,26 @@
 </head>
 
 <body>
+    <div class="back_ground"></div>
+    <div class="small_back1"></div>
+    <div class="small_back2"></div>
+    <div class="small_back3"></div>
     <div class="container">
 
         <div class="frist_in">
             <div id="pic1"> <img src="../static/assets/images/inputs/flowers.jpg" id="image"></div>
             <!-- <button id="cropImageBtn"> crop image</button> -->
             <div id="img_cont" class="frist_uploader">
-                <input type="file" id="image_uploads" name="image_uploads" />
+                <input type="file" id="image_uploads" name="image_uploads" hidden="hidden" />
+                <button id="custom_btn">CHOOSE FILE</button>
             </div>
-            <div class="selector_first">
-                <div><input type="radio" name="pic1_radio" value=0 checked="checked">Magnitude</div>
-                <div><input type="radio" name="pic1_radio" value=1>Phase</div>
+            <div class="selector_first" id="img1_radiobtn">
+                <div><input type="radio" name="pic1_radio" id="img1_mag" value=0 checked="checked">
+                    <label for="img1_mag">Magnitude</label>
+                </div>
+                <div><input type="radio" name="pic1_radio" value=1 id="img1_phase">
+                    <label for="img1_phase">Phase</label>
+                </div>
 
             </div>
 
@@ -33,11 +42,16 @@
 
             <!-- <button id="cropImageBtn2"> crop image</button> -->
             <div id="img_cont2" class="second_uploader">
-                <input type="file" id="image_uploads2" name="image_uploads" />
+                <input type="file" id="image_uploads2" name="image_uploads" hidden="hidden" />
+                <button id="custom_btn2">CHOOSE FILE</button>
             </div>
-            <div class="selector_second">
-                <div><input type="radio" name="pic2_radio" value=0>Magnitude</div>
-                <div><input type="radio" name="pic2_radio" value=1 checked="checked">Phase</div>
+            <div class="selector_second" id="img2_radiobtn">
+                <div><input type="radio" name="pic2_radio" value=0 id="img2_mag">
+                    <label for="img2_mag">Magnitude</label>
+                </div>
+                <div><input type="radio" name="pic2_radio" id="img2_phase" value=1>
+                    <label for="img2_phase">Phase</label>
+                </div>
             </div>
 
 

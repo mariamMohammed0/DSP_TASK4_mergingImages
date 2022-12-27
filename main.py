@@ -15,7 +15,6 @@ def index():
 @app.route('/crop_image1', methods=['POST'])
 def crop_image1():
     output = request.get_json()
-
     cropped_indecies=[0,0,0,0,0,0,0,0,0,0]
     cropped_indecies[0]=int(round(output['pic1']['left']))
     cropped_indecies[1]=int(round(output['pic1']['top'] ))
@@ -35,27 +34,13 @@ def crop_image1():
     fn.read_images(cropped_indecies)
     return output
 
-# @app.route('/crop_image2', methods=['POST'])
-# def crop_image2():
-#     output = request.get_json()
-#     print(output) # This is the output that was stored in the JSON within the browser
-#     print(type(output))
-#     print(round(output['left']))
-#     print(round(output['top']))
-#     print(round(output['width']))
-#     print(round(output['height']))
-#     # cropped_indecies=np.zeros(8)
 
-#     # cropped_indecies[4]=round(output['left'])
-#     # cropped_indecies[5]=round(output['top'])
-#     # cropped_indecies[6]=round(output['width'])
-#     # cropped_indecies[7]=round(output['height'])
-#     # fn.read_2images(cropped_indecies)
-#     return output
 @app.route('/save_image', methods=['POST'])
 def save_image():
     output = request.get_json()
-    print(output) 
+    # print(output['pic'])
+    # print(output['index'])
+    fn.download_img(output['pic'],output['index'])
     return output
     
 if __name__ == "__main__":
