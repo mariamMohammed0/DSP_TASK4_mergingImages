@@ -20,12 +20,13 @@ var picture2 = 1;
 var picture_phase=0;
 
 document.getElementById('pic1').addEventListener('click', function () {
+    console.log('ajax pic1')
     images_processing()
 });
 
 
 document.getElementById('pic2').addEventListener('click', function () {
-
+    console.log('ajax pic2')
     images_processing();
 });
 
@@ -33,47 +34,52 @@ document.getElementById('img1_radiobtn').addEventListener('click', function () {
 
     radiobtn = document.querySelector('input[name="pic1_radio"]:checked').value;
     // console.log(radiobtn)
-    if (radiobtn==0)
-    {
-        phase2_radio.checked = true;
-        mag2_radio.checked = false;
-        picture1=0;
-        picture2=1;
-    }
-    else if (radiobtn==1)
-    {
-        phase2_radio.checked = false;
-        mag2_radio.checked = true;
-        picture1=1;
-        picture2=0;
-    }
+    if (radiobtn!=picture1)
+        {
+        if (radiobtn==0)
+        {
+            phase2_radio.checked = true;
+            mag2_radio.checked = false;
+            picture1=0;
+            picture2=1;
+        }
+        else if (radiobtn==1)
+        {
+            phase2_radio.checked = false;
+            mag2_radio.checked = true;
+            picture1=1;
+            picture2=0;
+        }
 
-    
-    images_processing()           
-    
+        console.log('ajax rb1')
+        images_processing()           
+    } 
 });
 
 document.getElementById('img2_radiobtn').addEventListener('click', function () {
 
     radiobtn = document.querySelector('input[name="pic2_radio"]:checked').value;
     console.log(radiobtn)
-    if (radiobtn==0)
+    if (radiobtn!=picture2)
     {
-        phase1_radio.checked = true;
-        mag1_radio.checked = false;
-        picture1=1;
-        picture2=0;
-    }
-    else if (radiobtn==1)
-    {
-        phase1_radio.checked = false;
-        mag1_radio.checked = true;
-        picture1=0;
-        picture2=1;
-    }
+        if (radiobtn==0)
+        {
+            phase1_radio.checked = true;
+            mag1_radio.checked = false;
+            picture1=1;
+            picture2=0;
+        }
+        else if (radiobtn==1)
+        {
+            phase1_radio.checked = false;
+            mag1_radio.checked = true;
+            picture1=0;
+            picture2=1;
+        }
 
-
-    images_processing()
+        console.log('ajax rb2')
+        images_processing()
+    }
 });
 
 
@@ -87,7 +93,7 @@ function images_processing()
     // console.log(check);
     // console.log("picture_phase");
     // console.log(picture_phase)
-
+    console.log('proccesing')
     var data2 = cropper2.getCropBoxData();
     var data = cropper.getCropBoxData();
 
@@ -107,7 +113,7 @@ function images_processing()
 
     var pictures = { "pic1": data, "pic2": data2, "pic1_choice": picture1, "pic2_choice": picture2, "uni_phase": picture_phase};
 
-
+    
     $.ajax({
         url: "/crop_image1",
         type: "POST",
@@ -139,13 +145,16 @@ function updateImageDisplay() {
     file_name = curFiles[0].name;
     // console.log(curFiles[0].name)
     var picture = { "pic": file_name, "index": 0 };
+    console.log('ajax save 1')
     $.ajax({
         url: "/save_image",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(picture),
     });
+    images_processing()
     location.reload()
+    
 }
 const upload_btn2 = document.getElementById('image_uploads2');
 upload_btn2.addEventListener('change', updateImageDisplay2);
@@ -153,7 +162,7 @@ function updateImageDisplay2() {
 
     const curFiles2 = upload_btn2.files;
     file_name2 = curFiles2[0].name;
-    // console.log(curFiles2[0].name)
+    console.log('ajax save 2')
     var picture = { "pic": file_name2, "index": 1 };
     $.ajax({
         url: "/save_image",
@@ -161,51 +170,55 @@ function updateImageDisplay2() {
         contentType: "application/json",
         data: JSON.stringify(picture),
     });
+    images_processing()
     location.reload()
+    
 
 }
 custom_btn.addEventListener('click', function () {
     upload_btn.click();
+    // images_processing()
 })
 custom_btn2.addEventListener('click', function () {
     upload_btn2.click();
+    // images_processing()
 }
 
 )
 
 
-// document.getElementById('uniform_phase').addEventListener('click', function () {
+    document.getElementById('uniform_phase').addEventListener('click', function () {
 
-//     radiobtn = document.querySelector('input[name="uniform"]:checked');
-//     // console.log(radiobtn)
-//     if (radiobtn==null) 
-//     {
-//         check=0;
-//         // console.log(check)
+    radiobtn = document.querySelector('input[name="uniform"]:checked');
+    // console.log(radiobtn)
+    if (radiobtn==null) 
+    {
+        check=0;
+        // console.log(check)
 
-//     }
-//     else
-//     {
-//         // console.log(radiobtn)
-//         check = 1;
-//         // console.log(check)
-//     }
-//     images_processing()
-// });
+    }
+    else
+    {
+        // console.log(radiobtn)
+        check = 1;
+        // console.log(check)
+    }
+    images_processing()
+});
 
 
-// function get_uniform_value()
-// {
-//     radiobtn = document.querySelector('input[name="pic2_radio"]:checked').value;
-//     console.log(radiobtn)
-//     if (radiobtn==0)
-//     {
-//         phase1_radio.checked = true;
-//         mag1_radio.checked = false;
-//     }
-//     else if (radiobtn==1)
-//     {
-//         phase1_radio.checked = false;
-//         mag1_radio.checked = true;
-//     }
-// }
+function get_uniform_value()
+{
+    radiobtn = document.querySelector('input[name="pic2_radio"]:checked').value;
+    console.log(radiobtn)
+    if (radiobtn==0)
+    {
+        phase1_radio.checked = true;
+        mag1_radio.checked = false;
+    }
+    else if (radiobtn==1)
+    {
+        phase1_radio.checked = false;
+        mag1_radio.checked = true;
+    }
+}

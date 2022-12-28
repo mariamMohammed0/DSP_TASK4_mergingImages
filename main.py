@@ -8,32 +8,34 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    cropped_indecies=[0,0,0,0,0,0,0,0,0,0]
-    fn.images.read_images(cropped_indecies) 
+    # cropping_info=[0,0,0,0,0,0,0,0,0,0,0]
+
+    # fn.images.read_images(    cropping_info) 
     return render_template('index.html')
         
 @app.route('/crop_image1', methods=['POST'])
 def crop_image1():
     
     output = request.get_json()
-    print(output)
-    cropped_indecies=[0,0,0,0,0,0,0,0,0,0]
-    cropped_indecies[0]=int(round(output['pic1']['left']))
-    cropped_indecies[1]=int(round(output['pic1']['top'] ))
-    cropped_indecies[2]=int(round(output['pic1']['width']))
-    cropped_indecies[3]=int(round(output['pic1']['height']))
 
-    cropped_indecies[4]=int(round(output['pic2']['left']))
-    cropped_indecies[5]=int(round(output['pic2']['top'] ))
-    cropped_indecies[6]=int(round(output['pic2']['width']))
-    cropped_indecies[7]=int(round(output['pic2']['height']))
+    cropping_info=[0,0,0,0,0,0,0,0,0,0,0]
+    cropping_info[0]=int(round(output['pic1']['left']))
+    cropping_info[1]=int(round(output['pic1']['top'] ))
+    cropping_info[2]=int(round(output['pic1']['width']))
+    cropping_info[3]=int(round(output['pic1']['height']))
 
-    cropped_indecies[8]=int(output['pic1_choice'])
-    cropped_indecies[9]=int(output['pic2_choice'])
+    cropping_info[4]=int(round(output['pic2']['left']))
+    cropping_info[5]=int(round(output['pic2']['top'] ))
+    cropping_info[6]=int(round(output['pic2']['width']))
+    cropping_info[7]=int(round(output['pic2']['height']))
+
+    cropping_info[8]=int(output['pic1_choice'])
+    cropping_info[9]=int(output['pic2_choice'])
+    cropping_info[10]=1
 
 
 
-    fn.images.read_images(cropped_indecies)
+    fn.images.read_images(cropping_info)
     return output
 
 
