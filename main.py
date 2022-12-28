@@ -9,12 +9,14 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     cropped_indecies=[0,0,0,0,0,0,0,0,0,0]
-    fn.read_images(cropped_indecies) 
+    fn.images.read_images(cropped_indecies) 
     return render_template('index.html')
         
 @app.route('/crop_image1', methods=['POST'])
 def crop_image1():
+    
     output = request.get_json()
+    print(output)
     cropped_indecies=[0,0,0,0,0,0,0,0,0,0]
     cropped_indecies[0]=int(round(output['pic1']['left']))
     cropped_indecies[1]=int(round(output['pic1']['top'] ))
@@ -31,7 +33,7 @@ def crop_image1():
 
 
 
-    fn.read_images(cropped_indecies)
+    fn.images.read_images(cropped_indecies)
     return output
 
 
@@ -40,7 +42,7 @@ def save_image():
     output = request.get_json()
     # print(output['pic'])
     # print(output['index'])
-    fn.download_img(output['pic'],output['index'])
+    fn.images.download_img(output['pic'],output['index'])
     return output
     
 if __name__ == "__main__":
