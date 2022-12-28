@@ -8,9 +8,11 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+
     # cropping_info=[0,0,0,0,0,0,0,0,0,0,0]
 
     # fn.images.read_images(    cropping_info) 
+
     return render_template('index.html')
         
 @app.route('/crop_image1', methods=['POST'])
