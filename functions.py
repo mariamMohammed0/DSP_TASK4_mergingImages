@@ -5,6 +5,11 @@ import cv2
 import matplotlib.pylab as plt
 
 plt.style.use('ggplot')
+# img1 path 
+# img2 path 
+
+
+
 class images:
 
     def resize_images(img1, img2):
@@ -30,31 +35,63 @@ class images:
         width2 = cropping_indecies[6]
         height2 = int(cropping_indecies[7]*500/300)
 
-        chosen_part1 = F1_2d[top1:top1+height1, left1:left1+width1]
-        chosen_part2 = F2_2d[top2:top2+height2, left2:left2+width2]
+        inside_part1  =F1_2d[top1:top1+height1, left1:left1+width1]
+        outside_part1 =F1_2d
+        inside_part2  =F2_2d[top2:top2+height2, left2:left2+width2]
+        outside_part2 =F2_2d       
 
-        if(choice_img1 == 1):
-            rejected_part1 = F1_2d*0
-            rejected_part1 =np.exp(1j*rejected_part1)
-        elif (choice_img1 == 0):
-            rejected_part1 =np.ones((500,500))
+        if(cropping_indecies[10]==0):
+            
+            chosen_part1 = inside_part1
+            chosen_part2 = inside_part2
 
-        if(choice_img2 == 1):
-            rejected_part2 = F2_2d*0
-            rejected_part2 =np.exp(1j*rejected_part2)
+            if(choice_img1 == 1):
+                rejected_part1 = outside_part1*0
+                rejected_part1 =np.exp(1j*rejected_part1)
+            elif (choice_img1 == 0):
+                rejected_part1 =np.ones((500,500))
 
-        elif (choice_img2 == 0):
-            rejected_part2=np.ones((500,500))
+            if(choice_img2 == 1):
+                rejected_part2 = outside_part2*0
+                rejected_part2 =np.exp(1j*rejected_part2)
+
+            elif (choice_img2 == 0):
+                rejected_part2=np.ones((500,500))
 
 
-        print(rejected_part1)
-        print(rejected_part2)
+            print(rejected_part1)
+            print(rejected_part2)
 
-        result1 = rejected_part1.copy()
-        result2 = rejected_part2.copy()
+            result1 = rejected_part1.copy()
+            result2 = rejected_part2.copy()
 
-        result1[top1:top1+height1, left1:left1+width1] = chosen_part1
-        result2[top2:top2+height2, left2:left2+width2] = chosen_part2
+            result1[top1:top1+height1, left1:left1+width1] = chosen_part1
+            result2[top2:top2+height2, left2:left2+width2] = chosen_part2
+
+        if(cropping_indecies[10]==1):
+
+            chosen_part1 = outside_part1
+            chosen_part2 = outside_part2
+
+            if(choice_img1 == 1):
+                rejected_part1 = inside_part1*0
+                rejected_part1 =np.exp(1j*rejected_part1)
+            elif (choice_img1 == 0):
+                rejected_part1 =np.ones((height1,width1))
+
+            if(choice_img2 == 1):
+                rejected_part2 = inside_part2*0
+                rejected_part2 =np.exp(1j*rejected_part2)
+
+            elif (choice_img2 == 0):
+                rejected_part2=np.ones((height2,width2))
+
+            result1 = chosen_part1.copy()
+            result2 = chosen_part2.copy()
+
+            result1[top1:top1+height1, left1:left1+width1] = rejected_part1
+            result2[top2:top2+height2, left2:left2+width2] = rejected_part2
+            print(result1[0])
 
         return result1, result2
 
