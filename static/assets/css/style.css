@@ -164,7 +164,7 @@ button {
 }
 
 .small_back3 {
-    width: 650px;
+    width: 680px;
     height: 340px;
     z-index: -99;
     background-color: #9b9b9b76;
@@ -175,6 +175,12 @@ button {
 }
 
 .uniformphase {
+    position: absolute;
+    left: 1010px;
+    top: 530px;
+}
+
+.out_side {
     position: absolute;
     left: 1010px;
     top: 530px;
