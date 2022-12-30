@@ -1,92 +1,105 @@
+//Images
 const image = document.getElementById('image');
 const image2 = document.getElementById('image2');
-const custom_btn = document.getElementById('custom_btn')
-const custom_btn2 = document.getElementById('custom_btn2');
+
+//upload buttons
+const custom_upload_btn = document.getElementById('custom_btn')
+const custom_upload_btn2 = document.getElementById('custom_btn2');
+
+//cropper.js
 const cropper = new Cropper(image, { zoomable: 0, aspectRatio: 0, viewMode: 0, });
 const cropper2 = new Cropper(image2, { zoomable: 0, aspectRatio: 0, viewMode: 0, });
 
+
+//radio buttons of image 1 and their intial value
 const mag1_radio = document.getElementById('img1_mag');
 const phase1_radio = document.getElementById('img1_phase');
 mag1_radio.checked = true;
 
+//radio buttons of image 2 and their intial value
 const mag2_radio = document.getElementById('img2_mag');
 const phase2_radio = document.getElementById('img2_phase');
 phase2_radio.checked = true;
 
-//phase =1, Mag=0
-var check = 0;
-// var check1 = 0;
-var picture1 = 0;
-var picture2 = 1;
-var picture_phase=0;
-var flag =true;
+//outside of the box checkbox
+var outside_checkbox = 0;
 
+//phase =1, Mag=0
+var picture1_choice = 0;
+var picture2_choice = 1;
+
+//Intialization of output image
+var flag =true;
 if (flag== true)
 {
-    // console.log('true');
     images_processing();
     flag=false;
 }
 
+
+//event listener for image 1
 document.getElementById('pic1').addEventListener('click', function () {
     // console.log('ajax pic1')
     images_processing()
 });
 
-
+//event listener for image 2
 document.getElementById('pic2').addEventListener('click', function () {
     // console.log('ajax pic2')
     images_processing();
 });
 
+//event listener for radiobuttons of image 1
 document.getElementById('img1_radiobtn').addEventListener('click', function () {
 
+    //get value of checked radiobutton
     radiobtn = document.querySelector('input[name="pic1_radio"]:checked').value;
-    // console.log(radiobtn)
-    if (radiobtn!=picture1)
+    
+    //change the value of the other radiobutton
+    if (radiobtn!=picture1_choice)
         {
         if (radiobtn==0)
         {
             phase2_radio.checked = true;
             mag2_radio.checked = false;
-            picture1=0;
-            picture2=1;
+            picture1_choice=0;
+            picture2_choice=1;
         }
         else if (radiobtn==1)
         {
             phase2_radio.checked = false;
             mag2_radio.checked = true;
-            picture1=1;
-            picture2=0;
+            picture1_choice=1;
+            picture2_choice=0;
         }
-
-        // console.log('ajax rb1')
         images_processing()           
     } 
 });
 
+//event listener for radiobuttons of image 2
 document.getElementById('img2_radiobtn').addEventListener('click', function () {
 
+    //get value of checked radiobutton
     radiobtn = document.querySelector('input[name="pic2_radio"]:checked').value;
-    // console.log(radiobtn)
-    if (radiobtn!=picture2)
+    
+    //change the value of the other radiobutton
+    if (radiobtn!=picture2_choice)
     {
         if (radiobtn==0)
         {
             phase1_radio.checked = true;
             mag1_radio.checked = false;
-            picture1=1;
-            picture2=0;
+            picture1_choice=1;
+            picture2_choice=0;
         }
         else if (radiobtn==1)
         {
             phase1_radio.checked = false;
             mag1_radio.checked = true;
-            picture1=0;
-            picture2=1;
+            picture1_choice=0;
+            picture2_choice=1;
         }
 
-        // console.log('ajax rb2')
         images_processing()
     }
 });
@@ -94,43 +107,24 @@ document.getElementById('img2_radiobtn').addEventListener('click', function () {
 
 function images_processing() 
 {
-    // console.log("picture1");
-    // console.log(picture1);
-    // console.log("picture2");
-    // console.log(picture2);
-    // console.log("check");
-    // console.log(check);
-    // console.log("picture_phase");
-    // console.log(picture_phase)
-    // console.log('proccesing')
     var data2 = cropper2.getCropBoxData();
     var data = cropper.getCropBoxData();
+
+
+    //Intialize values for begining and uploading
     if (Object.keys(data).length==0)
     {
         data= { 'left': 50, 'top': 30, 'width': 400, 'height':240 };
     }
+
     if (Object.keys(data2).length==0)
     {
         data2= { 'left': 50, 'top': 30, 'width': 400, 'height':240 };
     }
-    // console.log(Object.keys(data).length)
-    // var c1 =  document.querySelector('input[name="pic1_radio"]:checked').value;
-    // var c2 = document.querySelector('input[name="pic2_radio"]:checked').value;
 
-    if (picture1==0 && check==1)
-    {
-        picture_phase=1;
-        // console.log("pic_1 mag");
-    }
-    else if (picture2==0 && check==1)
-    {
-        picture_phase=2;
-        // console.log("pic_2 mag");
-    }
+    //sending data to back in the form of dictionary
+    var pictures = { "pic1": data, "pic2": data2, "pic1_choice": picture1_choice, "pic2_choice": picture2_choice, "outside": outside_checkbox};
 
-    var pictures = { "pic1": data, "pic2": data2, "pic1_choice": picture1, "pic2_choice": picture2, "outside": check};
-
-    // console.log(pictures)
     $.ajax({
         url: "/crop_image1",
         type: "POST",
@@ -143,31 +137,21 @@ function images_processing()
 
             $(".img1").attr("src", image1);
             $(".img2").attr("src", image2);
-            // console.log('proccesing')
         }
-        // ,error: (error) =>
-        // {
-        //     console.log(JSON.stringify(error))
-        // }
     });
 }
 
 
 
-
-
-
-
-
+//upload button 1 functions
+custom_upload_btn.addEventListener('click', function () {upload_btn.click();})
 const upload_btn = document.getElementById('image_uploads');
 upload_btn.addEventListener('change', updateImageDisplay);
 function updateImageDisplay() {
 
     const curFiles = upload_btn.files;
     file_name = curFiles[0].name;
-    // console.log(curFiles[0].name)
     var picture = { "pic": file_name, "index": 0 };
-    // console.log('ajax save 1')
     $.ajax({
         url: "/save_image",
         type: "POST",
@@ -178,13 +162,15 @@ function updateImageDisplay() {
     location.reload()
     
 }
+
+//upload button 2 functions
+custom_upload_btn2.addEventListener('click', function () {upload_btn2.click();})
 const upload_btn2 = document.getElementById('image_uploads2');
 upload_btn2.addEventListener('change', updateImageDisplay2);
 function updateImageDisplay2() {
 
     const curFiles2 = upload_btn2.files;
     file_name2 = curFiles2[0].name;
-    // console.log('ajax save 2')
     var picture = { "pic": file_name2, "index": 1 };
     $.ajax({
         url: "/save_image",
@@ -197,68 +183,22 @@ function updateImageDisplay2() {
     
 
 }
-custom_btn.addEventListener('click', function () {
-    upload_btn.click();
-    // images_processing()
-})
-custom_btn2.addEventListener('click', function () {
-    upload_btn2.click();
-    // images_processing()
-}
 
-)
 
+
+
+//cropping outside the box functions
 document.getElementById('outside').addEventListener('click', function () {
 
     radiobtn = document.querySelector('input[name="out_side"]:checked');
-    // console.log('radiobtn')
     if (radiobtn==null) 
     {
-        check=0;
-        console.log(check)
+        outside_checkbox=0;
 
     }
     else
     {
-        // console.log(radiobtn)
-        check = 1;
-        console.log(check)
+        outside_checkbox = 1;
     }
     images_processing()
 });
-
-// document.getElementById('uniform_phase').addEventListener('click', function () {
-
-//     radiobtn = document.querySelector('input[name="uniform"]:checked');
-//     // console.log(radiobtn)
-//     if (radiobtn==null) 
-//     {
-//         check1=0;
-//         // console.log(check)
-
-//     }
-//     else
-//     {
-//         // console.log(radiobtn)
-//         check1 = 1;
-//         // console.log(check)
-//     }
-//     images_processing()
-// });
-
-
-// function get_uniform_value()
-// {
-//     radiobtn = document.querySelector('input[name="pic2_radio"]:checked').value;
-//     console.log(radiobtn)
-//     if (radiobtn==0)
-//     {
-//         phase1_radio.checked = true;
-//         mag1_radio.checked = false;
-//     }
-//     else if (radiobtn==1)
-//     {
-//         phase1_radio.checked = false;
-//         mag1_radio.checked = true;
-//     }
-// }
