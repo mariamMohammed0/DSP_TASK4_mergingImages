@@ -9,17 +9,17 @@ plt.style.use('ggplot')
 # img2 path
 
 
-class image:
-    def __init__(self, img ,index):
+class Image:
+    def __init__(self,image=None, path= None ,index=0):
 
-        self.image = img  #image readed by cv2 
-        self.index=index  #image number to be named with 
+        self.image = image  #image readed by cv2 
+        self.index = index  #image number to be named with 
+        self.image_path = path
 
-
-    def resize_image(self):
+    def resize(self, height=500, width=500):
         # ----------------Resizing
-        self.image = cv2.resize( self.image, (500, 500))
-        cv2.imwrite('static/assets/images/front/resized_img'+str(self.index)+'.png',  self.image)
+        self.image = cv2.resize( self.image, (height, width))
+        # cv2.imwrite('static/assets/images/front/resized_img'+str(self.index)+'.png',  self.image)
 
     def getFourier(self):
         fourier = np.fft.fft2(self.image)
@@ -29,6 +29,13 @@ class image:
     def gray_scale(self):
         # truning colored image to gray
         self.image=cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
+
+    def save(self ,save_path):
+        cv2.imwrite(save_path, self.image)
+
+    def read(self):
+        self.image = cv2.imread(self.image_path)
+
     
 
 
@@ -45,19 +52,22 @@ class ImageProcessing():
         img_file1 = 'static/assets/images/inputs/input_image0.png'
         img_file2 = 'static/assets/images/inputs/input_image1.png'
 
-        img1_cv2 = cv2.imread(img_file1)
-        img2_cv2 = cv2.imread(img_file2)
+        # img1_cv2 = cv2.imread(img_file1)
+        # img2_cv2 = cv2.imread(img_file2)
 
         # creating objects
 
-        img1 =image(img1_cv2,index=1)
-        img2 =image(img2_cv2,index=2)
+        img1 =Image(path=img_file1,index=1)
+        img2 =Image(path=img_file2,index=2)
+
+        img1.read()
+        img2.read()
 
         img1.gray_scale()
         img2.gray_scale()
 
-        img1.resize_image()
-        img2.resize_image()
+        img1.resize()
+        img2.resize()
 
         fourier1=img1.getFourier()
         fourier2=img2.getFourier()
@@ -67,19 +77,23 @@ class ImageProcessing():
     def Process_2images(self,img1_fourier,img2_fourier):
 
         if  (self.cropping_indecies[8] == 0 and self.cropping_indecies[9] == 1):  
-            print("choice1 mag choice2 phase")
+            # print("choice1 mag choice2 phase")
             fourier1, fourier2 = self.cropping_fourier(np.abs(img1_fourier), np.exp(1j*np.angle(img2_fourier)))
             combined_img1 = np.multiply(fourier1, fourier2)
 
         elif (self.cropping_indecies[8] == 1 and self.cropping_indecies[9] == 0):
-            print("choice1 phase choice2 mag")
+            # print("choice1 phase choice2 mag")
             fourier1, fourier2 = self.cropping_fourier(np.exp(1j*np.angle(img1_fourier)), np.abs(img2_fourier))
             combined_img1 = np.multiply(fourier1, fourier2)
-            print(combined_img1)
+            # print(combined_img1)
 
 
         imgCombined = np.real(np.fft.ifft2(np.fft.fftshift(combined_img1)))
-        cv2.imwrite("static/assets/images/outputs/output_image1.png", imgCombined)
+
+        img= Image(image=imgCombined)
+
+        img.save("static/assets/images/outputs/output_image1.png")
+        # cv2.imwrite("static/assets/images/outputs/output_image1.png", imgCombined)
 
         return imgCombined
 
@@ -127,8 +141,8 @@ class ImageProcessing():
             elif (choice_img2 == 0):
                 rejected_part2 = np.ones((500, 500))
 
-            print(rejected_part1)
-            print(rejected_part2)
+            # print(rejected_part1)
+            # print(rejected_part2)
 
             result1 = rejected_part1.copy()
             result2 = rejected_part2.copy()

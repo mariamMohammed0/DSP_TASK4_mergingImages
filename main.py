@@ -7,17 +7,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-def download_img( img_name, index):
-    print('***************************************************************')
-    img = cv2.imread('static/assets/images/upload/'+img_name)
-    save_img(img, index)
-    return
 
-def save_img( img_1d, index):
-    print('***************************************************************')
-    img_2d = cv2.resize(img_1d, (500, 500))
-    cv2.imwrite("static/assets/images/inputs/input_image" +
-                str(index)+'.png', img_2d)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -51,15 +41,27 @@ def crop_image1():
     processing.read_images()
     return output
 
+# def download_img( img_name, index):
+#     print('***************************************************************')
+#     img = cv2.imread('static/assets/images/upload/'+img_name)
+#     save_img(img, index)
+#     return
+
+# def save_img( img_1d, index):
+#     print('***************************************************************')
+#     img_2d = cv2.resize(img_1d, (500, 500))
+#     cv2.imwrite("static/assets/images/inputs/input_image" +
+#                 str(index)+'.png', img_2d)
 
 @app.route('/save_image', methods=['POST'])
 def save_image():
-    # print(colored("---------------------------save_image",'blue'))
-    # print('***************************************************************')
     output = request.get_json()
-
-
-    download_img(output['pic'],output['index'])
+    img_path = 'static/assets/images/upload/'+output['pic']
+    saved_path="static/assets/images/inputs/input_image" +str(output['index'])+'.png'
+    image =fn.Image(path=img_path)
+    image.read()
+    image.save(saved_path)
+    # download_img(output['pic'],output['index'])
     return output
 
 
