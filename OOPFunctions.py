@@ -13,8 +13,9 @@ class Image:
     def __init__(self,image=None, path= None ,index=0):
 
         self.image = image  #image readed by cv2 
-        self.index = index  #image number to be named with 
         self.image_path = path
+        if path is not None:
+            self.read()
 
     def resize(self, height=500, width=500):
         # ----------------Resizing
@@ -31,9 +32,11 @@ class Image:
         self.image=cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
 
     def save(self ,save_path):
+        # saving image to given path
         cv2.imwrite(save_path, self.image)
 
     def read(self):
+        #reading the image
         self.image = cv2.imread(self.image_path)
 
     
@@ -52,16 +55,10 @@ class ImageProcessing():
         img_file1 = 'static/assets/images/inputs/input_image0.png'
         img_file2 = 'static/assets/images/inputs/input_image1.png'
 
-        # img1_cv2 = cv2.imread(img_file1)
-        # img2_cv2 = cv2.imread(img_file2)
-
         # creating objects
 
         img1 =Image(path=img_file1,index=1)
         img2 =Image(path=img_file2,index=2)
-
-        img1.read()
-        img2.read()
 
         img1.gray_scale()
         img2.gray_scale()
@@ -69,23 +66,23 @@ class ImageProcessing():
         img1.resize()
         img2.resize()
 
-        fourier1=img1.getFourier()
-        fourier2=img2.getFourier()
+        return img1,img2
 
-        self.Process_2images(fourier1,fourier2)
+    def Process_2images(self):
+        
+        img1,img2=self.read_images()
 
-    def Process_2images(self,img1_fourier,img2_fourier):
+        img1_fourier=img1.getFourier()
+        img2_fourier=img2.getFourier()
 
-        if  (self.cropping_indecies[8] == 0 and self.cropping_indecies[9] == 1):  
-            # print("choice1 mag choice2 phase")
+
+        if  (self.cropping_indecies[8] == 0 and self.cropping_indecies[9] == 1): 
             fourier1, fourier2 = self.cropping_fourier(np.abs(img1_fourier), np.exp(1j*np.angle(img2_fourier)))
             combined_img1 = np.multiply(fourier1, fourier2)
 
         elif (self.cropping_indecies[8] == 1 and self.cropping_indecies[9] == 0):
-            # print("choice1 phase choice2 mag")
             fourier1, fourier2 = self.cropping_fourier(np.exp(1j*np.angle(img1_fourier)), np.abs(img2_fourier))
             combined_img1 = np.multiply(fourier1, fourier2)
-            # print(combined_img1)
 
 
         imgCombined = np.real(np.fft.ifft2(np.fft.fftshift(combined_img1)))
@@ -93,7 +90,6 @@ class ImageProcessing():
         img= Image(image=imgCombined)
 
         img.save("static/assets/images/outputs/output_image1.png")
-        # cv2.imwrite("static/assets/images/outputs/output_image1.png", imgCombined)
 
         return imgCombined
 
@@ -159,7 +155,7 @@ class ImageProcessing():
             
             # choice of an image ==1 phase selection
             # choice of an image ==0 magnitude selection
-           
+
             if(choice_img1 == 1):
                 rejected_part1 = inside_part1*0
                 rejected_part1 = np.exp(1j*rejected_part1)
